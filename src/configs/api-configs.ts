@@ -1,0 +1,23 @@
+export const API_URL = {
+  LOGIN: '/auth/login',
+  LOGOUT: '/auth/logout',
+  FORGOTPASS: '/auth/forgot-password',
+  RESET: '/auth/reset-password',
+  VAI_TRO: '/roles',
+  NGUOI_DUNG: '/users',
+  PROFILE: '/profile',
+  TINH: '/tinh',
+  HUYEN: '/huyen',
+  XA: '/xa',
+  CHANGE_PASS: '/profile/change-password',
+  UPDATE_PASS: '/profile/update-password',
+  VAI_TRO_MAC_DINH: '/roles/default-permission',
+  NOTIFICATIONS: '/thong-bao',
+  LOG_THAO_TAC: '/log-thao-tac',
+  VERIFY_OTP: '/auth/verify-otp',
+  GENERATE_OTP: '/auth/generate-otp',
+  CAU_HINH_CHUNG: '/cau-hinh-chung',
+  QUAN_LY_UPLOAD: '/quan-ly-upload',
+  /*new-api-path-here*/
+  OPTIONS: '/options'
+};
