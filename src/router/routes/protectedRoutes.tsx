@@ -19,6 +19,7 @@ const ThemQuanLiDuAnPage = React.lazy(() => import('@app/pages/QuanLiDuAn/ThemQu
 const SuaQuanLiDuAnPage = React.lazy(() => import('@app/pages/QuanLiDuAn/SuaQuanLiDuAn'));
 const XemChiTietQuanLiDuAnPage = React.lazy(() => import('@app/pages/QuanLiDuAn/XemChiTietQuanLiDuAn'));
 const CongNghePage = React.lazy(() => import('@app/pages/CongNghe/CongNghe'));
+const ThongTinCaNhanPage = React.lazy(() => import('@app/pages/ThongTinCaNhan/ThongTinCaNhan'));
 /*import-component-here*/
 
 // Wrapped with loading HOC
@@ -35,6 +36,7 @@ const ThemQuanLiDuAn = withLoading(ThemQuanLiDuAnPage);
 const SuaQuanLiDuAn = withLoading(SuaQuanLiDuAnPage);
 const XemChiTietQuanLiDuAn = withLoading(XemChiTietQuanLiDuAnPage);
 const CongNghe = withLoading(CongNghePage);
+const ThongTinCaNhan = withLoading(ThongTinCaNhanPage);
 /*import-component-with-loading-here*/
 
 /**
@@ -108,6 +110,10 @@ export const protectedRoutes: RouteObject[] = [
       {
         path: 'cong-nghe',
         element: <CongNghe />
+      },
+      {
+        path: 'thong-tin-ca-nhan',
+        element: <ThongTinCaNhan />
       },
       /*Declare route here*/
       {

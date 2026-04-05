@@ -146,7 +146,17 @@ export const EventGalleryUpload: React.FC<EventGalleryUploadProps> = ({ value, o
   const fileList = React.useMemo<UploadFile[]>(() => (Array.isArray(value) ? value : []), [value]);
 
   const resolvedFiles = React.useMemo(() => {
-    return fileList.map((file, index) => {
+    return fileList.map((item: any, index) => {
+      // Handle when item is a raw string (e.g. from raw API data)
+      if (typeof item === 'string') {
+        return {
+          key: `gallery-str-${index}`,
+          file: { uid: `gallery-str-${index}`, name: item.split('/').pop() || 'image.png', url: item } as any,
+          url: normalizeImageUrl(apiURL, item)
+        };
+      }
+
+      const file = item as UploadFile;
       const rawFile = file.originFileObj;
 
       if (isBlobLike(rawFile)) {

@@ -22,10 +22,11 @@ const SectionHeader = styled(BaseTypography.Title)`
 
 // ProjectFormValues import removed as it was unused
 interface FormQuanLiDuAnProps {
+  isEditing?: boolean;
   disabled?: boolean;
 }
 
-const FormQuanLiDuAn = ({ disabled }: FormQuanLiDuAnProps) => {
+const FormQuanLiDuAn = ({ isEditing, disabled }: FormQuanLiDuAnProps) => {
   return (
     <BaseRow gutter={[20, 20]}>
       <BaseCol span={24}>

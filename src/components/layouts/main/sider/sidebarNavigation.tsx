@@ -16,18 +16,6 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     icon: <StarOutlined />,
     url: '/'
   },
-  {
-    title: 'common.quan-li-du-an',
-    key: 'quan-li-du-an',
-    icon: <StarOutlined />,
-    url: '/quan-li-du-an'
-  },
-  {
-    title: 'common.cong-nghe',
-    key: 'cong-nghe',
-    icon: <StarOutlined />,
-    url: '/cong-nghe'
-  },
   /*new-sidebar-nav-here*/
   {
     title: 'common.tai-khoan',
@@ -43,6 +31,30 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         title: 'common.nguoi-dung',
         key: 'users',
         url: '/tai-khoan/nguoi-dung'
+      },
+      {
+        title: 'Thông tin cá nhân',
+        key: 'thong-tin-ca-nhan',
+        url: '/thong-tin-ca-nhan'
+      }
+    ]
+  },
+  {
+    title: 'Quản lí dự án',
+    key: 'quan-ly-du-an',
+    icon: <StarOutlined />,
+    children: [
+      {
+        title: 'common.quan-li-du-an',
+        key: 'quan-li-du-an',
+        icon: <StarOutlined />,
+        url: '/quan-li-du-an'
+      },
+      {
+        title: 'common.cong-nghe',
+        key: 'cong-nghe',
+        icon: <StarOutlined />,
+        url: '/cong-nghe'
       }
     ]
   },

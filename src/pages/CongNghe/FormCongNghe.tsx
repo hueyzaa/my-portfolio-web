@@ -6,10 +6,14 @@ import { BaseSwitch } from '@app/components/common/BaseSwitch/BaseSwitch';
 import { ToggleCard } from '@app/components/common/ToggleCard/ToggleCard';
 
 interface FormCongNgheProps {
+  isEditing?: boolean;
   disabled?: boolean;
 }
 
-const FormCongNghe = ({ disabled }: FormCongNgheProps) => {
+import { ColorPickerInput } from './components/ColorPickerInput';
+
+const FormCongNghe = (props: FormCongNgheProps) => {
+  const { disabled } = props;
   return (
     <BaseRow gutter={[20, 20]}>
       <BaseCol span={24}>
@@ -30,7 +34,7 @@ const FormCongNghe = ({ disabled }: FormCongNgheProps) => {
 
       <BaseCol span={12}>
         <BaseForm.Item name='mau' label='Màu sắc (mã hex)'>
-          <BaseInput placeholder='VD: #1890ff' size='small' disabled={disabled} />
+          <ColorPickerInput disabled={disabled} />
         </BaseForm.Item>
       </BaseCol>
 

@@ -49,7 +49,7 @@ const SuaQuanLiDuAn = () => {
           gallery: transformToFileList(data.gallery || []),
           tools: data.tools || data.tool_details?.map((t: any) => t.id) || []
         };
-        setInitialData(data);
+        setInitialData(formData as any);
         form.setFieldsValue(formData);
       }
     };
