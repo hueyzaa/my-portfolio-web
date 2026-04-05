@@ -14,6 +14,11 @@ const LogThaoTacPage = React.lazy(() => import('@app/pages/LogThaoTac/LogThaoTac
 const CauHinhChungPage = React.lazy(() => import('@app/pages/CauHinhHeThong/CauHinhChung/CauHinhChung'));
 const CauHinhHeThongPage = React.lazy(() => import('@app/pages/CauHinhHeThong/CauHinhThongTinHeThong/CauHinhHeThong'));
 const QuanLyUploadPage = React.lazy(() => import('@app/pages/CauHinhHeThong/QuanLyUpload/QuanLyUpload'));
+const QuanLiDuAnPage = React.lazy(() => import('@app/pages/QuanLiDuAn/QuanLiDuAn'));
+const ThemQuanLiDuAnPage = React.lazy(() => import('@app/pages/QuanLiDuAn/ThemQuanLiDuAn'));
+const SuaQuanLiDuAnPage = React.lazy(() => import('@app/pages/QuanLiDuAn/SuaQuanLiDuAn'));
+const XemChiTietQuanLiDuAnPage = React.lazy(() => import('@app/pages/QuanLiDuAn/XemChiTietQuanLiDuAn'));
+const CongNghePage = React.lazy(() => import('@app/pages/CongNghe/CongNghe'));
 /*import-component-here*/
 
 // Wrapped with loading HOC
@@ -25,6 +30,11 @@ const LogThaoTac = withLoading(LogThaoTacPage);
 const CauHinhChung = withLoading(CauHinhChungPage);
 const CauHinhHeThong = withLoading(CauHinhHeThongPage);
 const QuanLyUpload = withLoading(QuanLyUploadPage);
+const QuanLiDuAn = withLoading(QuanLiDuAnPage);
+const ThemQuanLiDuAn = withLoading(ThemQuanLiDuAnPage);
+const SuaQuanLiDuAn = withLoading(SuaQuanLiDuAnPage);
+const XemChiTietQuanLiDuAn = withLoading(XemChiTietQuanLiDuAnPage);
+const CongNghe = withLoading(CongNghePage);
 /*import-component-with-loading-here*/
 
 /**
@@ -43,10 +53,6 @@ export const protectedRoutes: RouteObject[] = [
       {
         index: true,
         element: <Home />
-      },
-      {
-        path: '*',
-        element: <Error404 />
       },
       ...profileRoutes,
       {
@@ -79,7 +85,34 @@ export const protectedRoutes: RouteObject[] = [
         element: <CauHinhHeThong />
       },
       {
-        /*Declare route here*/
+        path: 'quan-li-du-an',
+        children: [
+          {
+            index: true,
+            element: <QuanLiDuAn />
+          },
+          {
+            path: 'them',
+            element: <ThemQuanLiDuAn />
+          },
+          {
+            path: 'sua/:id',
+            element: <SuaQuanLiDuAn />
+          },
+          {
+            path: 'xem/:id',
+            element: <XemChiTietQuanLiDuAn />
+          }
+        ]
+      },
+      {
+        path: 'cong-nghe',
+        element: <CongNghe />
+      },
+      /*Declare route here*/
+      {
+        path: '*',
+        element: <Error404 />
       }
     ]
   }

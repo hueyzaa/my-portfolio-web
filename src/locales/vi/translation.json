@@ -60,7 +60,10 @@
     "lich-su": "Lịch sử",
     "cau-hinh-he-thong": "Cấu hình hệ thống",
     "cau-hinh-thong-tin-he-thong": "Cấu hình thông tin hệ thống",
-    "quan-ly-upload": "Quản lý upload"
+    "quan-ly-upload": "Quản lý upload",
+    "quan-li-du-an": "Quản lý dự án",
+    "cong-nghe": "Quản lý Công nghệ",
+    "reset": "Làm mới"
   },
   "baocao": {},
   "login": {

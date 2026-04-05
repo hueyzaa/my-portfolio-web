@@ -9,7 +9,7 @@ export const patchData = async (
   id: number,
   data: any,
   closeModal: () => void,
-  withId: boolean = false
+  withId: boolean = true
 ) => {
   try {
     const resp: IApiSuccess = await apiInstance.patch(`${path}/${withId ? id : ''}`, data);

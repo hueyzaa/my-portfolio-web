@@ -8,8 +8,8 @@ export interface SelectApiProps extends SelectProps {
   filter?: any; //createFilterQuery(0, 'ly_do.loai', 'equal', 'THU')
   path: string;
   reload?: boolean;
-  style: CSSProperties;
-  onChange: (
+  style?: CSSProperties;
+  onChange?: (
     value: unknown,
     option: DefaultOptionType | BaseOptionType | (DefaultOptionType | BaseOptionType)[]
   ) => void;
@@ -22,7 +22,7 @@ const SelectApi = ({ mode, path, filter, placeholder, disabled, reload, value, s
     async function getData() {
       const data = await getDataSelect(path, filter);
       const optionsSelect = data.map((item: any) => {
-        return { ...item, value: item.id || item.value, label: item.name || item.label };
+        return { ...item, value: item.id || item.value, label: item.ten || item.name || item.label };
       });
       if (data.length === 0) {
         return;

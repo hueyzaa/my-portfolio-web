@@ -25,7 +25,7 @@ const SelectFormApi = ({
     async function getData() {
       const data = await getDataSelect(path, filter);
       const optionsSelect = data.map((item: any) => {
-        return { ...item, value: item.id || item.value, label: item.name || item.label };
+        return { ...item, value: item.id || item.value, label: item.ten || item.name || item.label };
       });
       if (data.length === 0) {
         return;

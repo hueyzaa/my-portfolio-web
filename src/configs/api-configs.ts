@@ -18,6 +18,9 @@ export const API_URL = {
   GENERATE_OTP: '/auth/generate-otp',
   CAU_HINH_CHUNG: '/cau-hinh-chung',
   QUAN_LY_UPLOAD: '/quan-ly-upload',
+  QUAN_LI_DU_AN: '/quan-li-du-an',
+  CONG_NGHE: '/cong-nghe',
+  CONG_NGHE: '/cong-nghe',
   /*new-api-path-here*/
   OPTIONS: '/options'
 };
