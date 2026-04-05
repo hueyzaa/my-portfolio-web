@@ -55,6 +55,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'cong-nghe',
         icon: <StarOutlined />,
         url: '/cong-nghe'
+      },
+      {
+        title: 'common.quan-ly-lien-he',
+        key: 'quan-ly-lien-he',
+        icon: <StarOutlined />,
+        url: '/quan-ly-lien-he'
       }
     ]
   },
@@ -79,6 +85,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
         key: 'quan-ly-upload',
         icon: <StarOutlined />,
         url: '/quan-ly-upload'
+      },
+      {
+        title: 'common.cau-hinh-trang',
+        key: 'cau-hinh-trang',
+        icon: <SettingOutlined />,
+        url: '/cau-hinh-trang'
       }
     ]
   },
