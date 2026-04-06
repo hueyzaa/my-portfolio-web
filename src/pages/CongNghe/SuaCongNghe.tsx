@@ -25,6 +25,8 @@ const SuaCongNghe = ({ path, id }: { path: string; id: number }) => {
     const data: CongNgheEntity = await getDataById(id, path);
     form.setFieldsValue({
       ...data,
+      mau: data.mau || '#4285f4',
+      mo_ta: data.mo_ta || '',
       trang_thai: data.trang_thai === STATUS_ACTIVE
     });
     setIsModalOpen(true);

@@ -98,7 +98,7 @@ export const ColorPickerInput: React.FC<ColorPickerInputProps> = ({ value = '', 
           <PresetSquare
             key={color}
             color={color}
-            active={value.toLowerCase() === color.toLowerCase()}
+            active={(value || '').toLowerCase() === color.toLowerCase()}
             onClick={() => handleColorClick(color)}
           />
         ))}
