@@ -16,6 +16,12 @@ export const sidebarNavigation: SidebarNavigationItem[] = [
     icon: <StarOutlined />,
     url: '/'
   },
+  {
+    title: 'common.quan-li-dich-vu',
+    key: 'quan-li-dich-vu',
+    icon: <StarOutlined />,
+    url: '/quan-li-dich-vu'
+  },
   /*new-sidebar-nav-here*/
   {
     title: 'common.tai-khoan',

@@ -20,7 +20,7 @@ export const API_URL = {
   QUAN_LY_UPLOAD: '/quan-ly-upload',
   QUAN_LI_DU_AN: '/quan-li-du-an',
   CONG_NGHE: '/cong-nghe',
-  CONG_NGHE: '/cong-nghe',
+  QUAN_LI_DICH_VU: '/quan-li-dich-vu',
   /*new-api-path-here*/
   OPTIONS: '/options'
 };

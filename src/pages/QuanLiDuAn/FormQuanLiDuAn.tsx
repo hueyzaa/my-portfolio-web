@@ -57,6 +57,33 @@ const FormQuanLiDuAn = ({ isEditing, disabled }: FormQuanLiDuAnProps) => {
 
       <BaseCol span={24}>
         <Divider />
+        <SectionHeader level={4}>CẤU HÌNH CHI TIẾT MONOLITH</SectionHeader>
+      </BaseCol>
+
+      <BaseCol span={12}>
+        <BaseForm.Item name='vai_tro' label='Vai trò (Role)'>
+          <BaseInput placeholder='VD: DESIGNER & DEVELOPER' disabled={disabled} />
+        </BaseForm.Item>
+      </BaseCol>
+
+      <BaseCol span={12}>
+        <BaseForm.Item name='dich_vu' label='Dịch vụ (Services)'>
+          <BaseInput placeholder='VD: UI/UX, FRONTEND & MOTION' disabled={disabled} />
+        </BaseForm.Item>
+      </BaseCol>
+
+      <BaseCol span={24}>
+        <BaseForm.Item name='tieu_de_phu' label='Slogan / Headline (Concept)'>
+          <BaseInput.TextArea 
+            placeholder='VD: Crafting unique experiences through minimalist design and modular architecture.' 
+            autoSize={{ minRows: 2, maxRows: 4 }}
+            disabled={disabled} 
+          />
+        </BaseForm.Item>
+      </BaseCol>
+
+      <BaseCol span={24}>
+        <Divider />
         <SectionHeader level={4}>HÌNH ẢNH</SectionHeader>
       </BaseCol>
 

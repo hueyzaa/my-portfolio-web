@@ -212,7 +212,8 @@
     "warning": "Warning",
     "zipcode": "Zipcode",
     "delete": "Delete",
-    "quan-li-du-an": "Project Management"
+    "quan-li-du-an": "Project Management",
+    "quan-ly-dich-vu": "Service Management"
   },
   "medical-dashboard": {
     "activity": {
