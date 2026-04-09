@@ -11,6 +11,8 @@ import { BaseRow } from '@app/components/common/BaseRow/BaseRow';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import FormCongNghe from './FormCongNghe';
 import { CONG_NGHE_PATH } from '../../CongNghe/constants';
+import { getListData } from '@app/api/getData.api';
+import { handleDuplicateOrder } from '@app/utils/utils';
 
 export interface ToolSelectWithQuickAddProps {
   name: string;
@@ -46,12 +48,24 @@ export const ToolSelectWithQuickAdd: React.FC<ToolSelectWithQuickAddProps> = ({
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [creating, setCreating] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [existingOrders, setExistingOrders] = useState<number[]>([]);
   const [modalForm] = BaseForm.useForm();
   const form = Form.useFormInstance();
 
-  const showModal = () => {
+  const showModal = async () => {
+    try {
+      const res = await getListData(CONG_NGHE_PATH, { limit: 1000 });
+      if (res?.data) {
+        const orders = res.data.map((item: any) => item.thu_tu);
+        setExistingOrders(orders);
+        // Suggest next order
+        const nextOrder = handleDuplicateOrder(0, orders);
+        modalForm.setFieldsValue({ thu_tu: nextOrder });
+      }
+    } catch (error) {
+      console.error('Error fetching technology orders:', error);
+    }
     setIsModalVisible(true);
-    modalForm.resetFields();
   };
 
   const handleCancel = () => {
@@ -126,8 +140,8 @@ export const ToolSelectWithQuickAdd: React.FC<ToolSelectWithQuickAddProps> = ({
           </BaseButton>
         ]}
       >
-        <BaseForm form={modalForm} layout='vertical' onFinish={handleCreate}>
-          <FormCongNghe />
+        <BaseForm id='formThemCongNgheQuick' form={modalForm} layout='vertical' onFinish={handleCreate}>
+          <FormCongNghe existingOrders={existingOrders} />
         </BaseForm>
       </BaseModal>
     </BaseForm.Item>

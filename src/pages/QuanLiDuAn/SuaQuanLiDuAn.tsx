@@ -12,12 +12,14 @@ import FormQuanLiDuAn from './FormQuanLiDuAn';
 import ProjectFormPage from './components/ProjectFormPage';
 import { ProjectEntity, ProjectFormValues } from './types';
 import { PROJECT_PATH, STATUS_DRAFT, STATUS_PUBLISHED } from './constants';
+import { getListData } from '@app/api/getData.api';
 
 const SuaQuanLiDuAn = () => {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   const [form] = BaseForm.useForm();
   const [initialData, setInitialData] = useState<ProjectEntity | null>(null);
+  const [existingOrders, setExistingOrders] = useState<number[]>([]);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -40,17 +42,29 @@ const SuaQuanLiDuAn = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return;
-      const data: ProjectEntity = await getDataById(Number(id), path);
-      if (data) {
-        const formData = {
-          ...data,
-          status: data.status === STATUS_PUBLISHED,
-          thumbnail: transformToFileList(data.thumbnail || ''),
-          gallery: transformToFileList(data.gallery || []),
-          tools: data.tools || data.tool_details?.map((t: any) => t.id) || []
-        };
-        setInitialData(formData as any);
-        form.setFieldsValue(formData);
+      try {
+        const [data, listRes] = await Promise.all([
+          getDataById(Number(id), path),
+          getListData(path, { limit: 1000 })
+        ]);
+
+        if (data) {
+          const formData = {
+            ...data,
+            status: data.status === STATUS_PUBLISHED,
+            thumbnail: transformToFileList(data.thumbnail || ''),
+            gallery: transformToFileList(data.gallery || []),
+            tools: data.tools || data.tool_details?.map((t: any) => t.id) || []
+          };
+          setInitialData(formData as any);
+          form.setFieldsValue(formData);
+        }
+
+        if (listRes?.data) {
+          setExistingOrders(listRes.data.map((item: any) => item.order));
+        }
+      } catch (error) {
+        console.error('Error fetching project data or orders:', error);
       }
     };
     fetchData();
@@ -125,7 +139,7 @@ const SuaQuanLiDuAn = () => {
       loading={isLoading}
       submitLabel='Cập nhật'
     >
-      <FormQuanLiDuAn isEditing />
+      <FormQuanLiDuAn existingOrders={existingOrders} />
     </ProjectFormPage>
   );
 };

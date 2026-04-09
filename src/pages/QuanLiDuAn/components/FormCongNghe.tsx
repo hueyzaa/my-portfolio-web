@@ -1,11 +1,27 @@
+import React from 'react';
 import { BaseCol } from '@app/components/common/BaseCol/BaseCol';
 import { BaseRow } from '@app/components/common/BaseRow/BaseRow';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { BaseInput } from '@app/components/common/inputs/BaseInput/BaseInput';
 import { BaseSwitch } from '@app/components/common/BaseSwitch/BaseSwitch';
 import { ToggleCard } from '@app/components/common/ToggleCard/ToggleCard';
+import { ColorPickerInput } from '../../CongNghe/components/ColorPickerInput';
+import { handleDuplicateOrder } from '@app/utils/utils';
+import { Form } from 'antd';
+import { BaseInputNumber } from '@app/components/common/inputs/InputNumber/BaseInputNumber';
 
-const FormCongNghe = () => {
+const FormCongNghe = ({ existingOrders = [] }: { existingOrders?: number[] }) => {
+  const form = Form.useFormInstance();
+
+  const handleOrderBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value)) {
+      const nextValue = handleDuplicateOrder(value, existingOrders);
+      if (nextValue !== value) {
+        form.setFieldsValue({ thu_tu: nextValue });
+      }
+    }
+  };
   return (
     <BaseRow gutter={[20, 20]}>
       <BaseCol span={24}>
@@ -24,9 +40,15 @@ const FormCongNghe = () => {
         </BaseForm.Item>
       </BaseCol>
 
-      <BaseCol span={12}>
+      <BaseCol span={24}>
         <BaseForm.Item name='mau' label='Màu sắc (mã hex)'>
-          <BaseInput placeholder='VD: #1890ff' size='small' />
+          <ColorPickerInput />
+        </BaseForm.Item>
+      </BaseCol>
+
+      <BaseCol span={12}>
+        <BaseForm.Item name='thu_tu' label='Thứ tự' initialValue={1}>
+          <BaseInputNumber size='small' min={1} style={{ width: '100%' }} onBlur={handleOrderBlur} />
         </BaseForm.Item>
       </BaseCol>
 

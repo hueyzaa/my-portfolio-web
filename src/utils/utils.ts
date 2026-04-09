@@ -292,3 +292,20 @@ export const setValueFileAnt = (apiURL: string, filePath: string, fileName?: str
     }
   ];
 };
+
+/**
+ * Automatically calculates the next available sequence number if the current one is taken.
+ * Ensures the value starts from at least 1.
+ * @param currentVal The number entered by the user
+ * @param existingVals Array of numbers already used in the same category
+ */
+export const handleDuplicateOrder = (currentVal: number, existingVals: number[]): number => {
+  // Ensure the starting value is at least 1
+  let nextValue = Math.max(1, currentVal);
+  const usedValues = new Set(existingVals.map((v) => Number(v)).filter((v) => !isNaN(v)));
+
+  while (usedValues.has(nextValue)) {
+    nextValue++;
+  }
+  return nextValue;
+};

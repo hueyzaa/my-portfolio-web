@@ -1,3 +1,4 @@
+import React from 'react';
 import { BaseCol } from '@app/components/common/BaseCol/BaseCol';
 import { BaseRow } from '@app/components/common/BaseRow/BaseRow';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
@@ -11,7 +12,8 @@ import EventGalleryUpload from '@app/components/common/EventGalleryUpload/EventG
 import { ToggleCard } from '@app/components/common/ToggleCard/ToggleCard';
 import styled from 'styled-components';
 import { ToolSelectWithQuickAdd } from './components/ToolSelectWithQuickAdd';
-import { Divider } from 'antd';
+import { Divider, Form } from 'antd';
+import { handleDuplicateOrder } from '@app/utils/utils';
 
 const SectionHeader = styled(BaseTypography.Title)`
   color: var(--primary-color) !important;
@@ -24,9 +26,22 @@ const SectionHeader = styled(BaseTypography.Title)`
 interface FormQuanLiDuAnProps {
   isEditing?: boolean;
   disabled?: boolean;
+  existingOrders?: number[];
 }
 
-const FormQuanLiDuAn = ({ isEditing, disabled }: FormQuanLiDuAnProps) => {
+const FormQuanLiDuAn = ({ disabled, existingOrders = [] }: FormQuanLiDuAnProps) => {
+  const form = Form.useFormInstance();
+
+  const handleOrderBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (disabled) return;
+    const value = parseInt(e.target.value);
+    if (!isNaN(value)) {
+      const nextValue = handleDuplicateOrder(value, existingOrders);
+      if (nextValue !== value) {
+        form.setFieldsValue({ order: nextValue });
+      }
+    }
+  };
   return (
     <BaseRow gutter={[20, 20]}>
       <BaseCol span={24}>
@@ -74,10 +89,10 @@ const FormQuanLiDuAn = ({ isEditing, disabled }: FormQuanLiDuAnProps) => {
 
       <BaseCol span={24}>
         <BaseForm.Item name='tieu_de_phu' label='Slogan / Headline (Concept)'>
-          <BaseInput.TextArea 
-            placeholder='VD: Crafting unique experiences through minimalist design and modular architecture.' 
+          <BaseInput.TextArea
+            placeholder='VD: Crafting unique experiences through minimalist design and modular architecture.'
             autoSize={{ minRows: 2, maxRows: 4 }}
-            disabled={disabled} 
+            disabled={disabled}
           />
         </BaseForm.Item>
       </BaseCol>
@@ -135,8 +150,14 @@ const FormQuanLiDuAn = ({ isEditing, disabled }: FormQuanLiDuAnProps) => {
       </BaseCol>
 
       <BaseCol span={12}>
-        <BaseForm.Item name='order' label='Thứ tự' initialValue={0}>
-          <BaseInputNumber size='small' min={0} style={{ width: '100%' }} disabled={disabled} />
+        <BaseForm.Item name='order' label='Thứ tự' initialValue={1}>
+          <BaseInputNumber
+            size='small'
+            min={1}
+            style={{ width: '100%' }}
+            disabled={disabled}
+            onBlur={handleOrderBlur}
+          />
         </BaseForm.Item>
       </BaseCol>
     </BaseRow>

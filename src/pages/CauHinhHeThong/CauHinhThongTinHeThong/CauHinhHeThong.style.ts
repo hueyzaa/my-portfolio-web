@@ -1,4 +1,3 @@
-import { media } from '@app/styles/themes/constants';
 import { styled } from 'styled-components';
 
 export const ImgWrapper = styled.div`

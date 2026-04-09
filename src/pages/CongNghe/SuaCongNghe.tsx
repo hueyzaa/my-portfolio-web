@@ -13,7 +13,7 @@ import FormCongNghe from './FormCongNghe';
 import { CongNgheEntity, CongNgheFormValues } from './types';
 import { STATUS_ACTIVE, STATUS_INACTIVE } from './constants';
 
-const SuaCongNghe = ({ path, id }: { path: string; id: number }) => {
+const SuaCongNghe = ({ path, id, existingOrders }: { path: string; id: number; existingOrders?: number[] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form] = BaseForm.useForm();
@@ -74,7 +74,7 @@ const SuaCongNghe = ({ path, id }: { path: string; id: number }) => {
         ]}
       >
         <BaseForm id={`formSuaCongNghe-${id}`} form={form} layout='vertical' onFinish={onUpdate}>
-          <FormCongNghe />
+          <FormCongNghe existingOrders={existingOrders} />
         </BaseForm>
       </BaseModal>
     </>

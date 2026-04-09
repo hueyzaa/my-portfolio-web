@@ -17,8 +17,9 @@ export const getTechnologyColumns = (
   dateSearch: any,
   t: any,
   path: string,
-  SuaCongNghe: React.ComponentType<{ path: string; id: number }>,
-  XemCongNghe: React.ComponentType<{ path: string; id: number }>
+  SuaCongNghe: React.ComponentType<{ path: string; id: number; existingOrders?: number[] }>,
+  XemCongNghe: React.ComponentType<{ path: string; id: number }>,
+  existingOrders: number[] = []
 ) => {
   return [
     {
@@ -39,7 +40,7 @@ export const getTechnologyColumns = (
         return (
           <BaseSpace size={0}>
             <XemCongNghe path={path} id={id} />
-            {permission.edit && <SuaCongNghe path={path} id={id} />}
+            {permission.edit && <SuaCongNghe path={path} id={id} existingOrders={existingOrders} />}
             {permission.delete && (
               <Delete path={path} title={`${t('common.cong-nghe')} ${record.ten}`} id={id} onShow={onRefresh} />
             )}
@@ -78,6 +79,14 @@ export const getTechnologyColumns = (
           {trang_thai === STATUS_ACTIVE ? 'Hoạt động' : 'Ngưng'}
         </Tag>
       )
+    },
+    {
+      title: 'Thứ tự',
+      dataIndex: 'thu_tu',
+      width: 100,
+      align: 'center' as const,
+      sorter: (a: any, b: any) => a.thu_tu - b.thu_tu,
+      render: (thu_tu: number) => <b>{thu_tu}</b>
     },
     {
       title: 'Thời gian tạo',

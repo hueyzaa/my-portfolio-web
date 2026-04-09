@@ -10,15 +10,36 @@ import FormQuanLiDuAn from './FormQuanLiDuAn';
 import ProjectFormPage from './components/ProjectFormPage';
 import { ProjectFormValues } from './types';
 import { PROJECT_PATH, STATUS_DRAFT, STATUS_PUBLISHED } from './constants';
+import { getListData } from '@app/api/getData.api';
+import { handleDuplicateOrder } from '@app/utils/utils';
+import { useEffect } from 'react';
 
 const ThemQuanLiDuAn = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [existingOrders, setExistingOrders] = useState<number[]>([]);
   const [form] = BaseForm.useForm();
-  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const path = PROJECT_PATH;
+  const { t } = useTranslation();
   const title = `Thêm ${t('common.quan-li-du-an').toLowerCase()}`;
+  const path = PROJECT_PATH;
+  useEffect(() => {
+    const fetchExistingOrders = async () => {
+      try {
+        const res = await getListData(path, { limit: 1000 });
+        if (res?.data) {
+          const orders = res.data.map((item: any) => item.order);
+          setExistingOrders(orders);
+          // Suggest next order
+          const nextOrder = handleDuplicateOrder(0, orders);
+          form.setFieldsValue({ order: nextOrder });
+        }
+      } catch (error) {
+        console.error('Error fetching existing project orders:', error);
+      }
+    };
+    fetchExistingOrders();
+  }, [path, form]);
 
   const goBack = () => {
     navigate('/quan-li-du-an');
@@ -85,12 +106,12 @@ const ThemQuanLiDuAn = () => {
       formId='formThemQuanLiDuAn'
       form={form}
       onFinish={onCreate}
-      onBack={goBack}
+      onBack={() => navigate('/quan-li-du-an')}
       onReset={() => form.resetFields()}
       loading={isLoading}
       submitLabel='Hoàn thành'
     >
-      <FormQuanLiDuAn isEditing={false} />
+      <FormQuanLiDuAn existingOrders={existingOrders} />
     </ProjectFormPage>
   );
 };

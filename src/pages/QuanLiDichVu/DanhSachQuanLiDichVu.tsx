@@ -1,4 +1,5 @@
 import { getListData } from '@app/api/getData.api';
+import { Tag } from 'antd';
 import { BaseSpace } from '@app/components/common/BaseSpace/BaseSpace';
 import Delete from '@app/components/customs/Delete/Delete';
 import CustomTable from '@app/components/customs/Table/CustomTable';
@@ -54,7 +55,13 @@ const DanhSachQuanLiDichVu = ({ path, permission }: { path: string; permission: 
         return (
           <BaseSpace size={0}>
             <XemChiTietQuanLiDichVu path={path} id={id} />
-            {permission.edit && <SuaQuanLiDichVu path={path} id={id} />}
+            {permission.edit && (
+              <SuaQuanLiDichVu 
+                path={path} 
+                id={id} 
+                existingOrders={danhSach?.data?.map((item: any) => item.thu_tu) || []} 
+              />
+            )}
             {permission.delete && (
               <Delete path={path} title={`${t('common.quan-li-dich-vu')} ${record.ten}`} id={id} onShow={getDanhSach} />
             )}
@@ -92,7 +99,9 @@ const DanhSachQuanLiDichVu = ({ path, permission }: { path: string; permission: 
       width: '120px',
       align: 'center',
       render: (status: boolean) => (
-        <span style={{ color: status ? '#52c41a' : '#ff4d4f', fontWeight: 600 }}>{status ? 'Hiển thị' : 'Ẩn'}</span>
+        <Tag color={status ? 'success' : 'default'} style={{ fontSize: '13px' }}>
+          {status ? 'Hiển thị' : 'Ẩn'}
+        </Tag>
       )
     },
     {

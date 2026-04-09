@@ -1,4 +1,5 @@
 import React from 'react';
+import { Tag } from 'antd';
 import moment from 'moment';
 import { EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { BaseSpace } from '@app/components/common/BaseSpace/BaseSpace';
@@ -85,16 +86,19 @@ export const getProjectColumns = (
       title: 'Trạng thái',
       dataIndex: 'status',
       width: COLUMN_WIDTHS.STATUS,
-      render: (status: string) => {
-        return status === STATUS_PUBLISHED ? 'Công khai' : 'Nháp';
-      }
+      render: (status: string) => (
+        <Tag color={status === STATUS_PUBLISHED ? 'success' : 'default'} style={{ fontSize: '13px' }}>
+          {status === STATUS_PUBLISHED ? 'Công khai' : 'Nháp'}
+        </Tag>
+      )
     },
     {
       title: 'Thứ tự',
       dataIndex: 'order',
       width: COLUMN_WIDTHS.ORDER,
-      align: 'right' as const,
-      render: (order: number) => order
+      align: 'center' as const,
+      sorter: (a: any, b: any) => a.order - b.order,
+      render: (order: number) => <b>{order}</b>
     },
     {
       title: 'Thời gian tạo',

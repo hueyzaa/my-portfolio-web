@@ -13,7 +13,7 @@ import FormQuanLiDichVu from './FormQuanLiDichVu';
 import { apiURL } from '@app/configs/configs';
 import { BaseTypography } from '@app/components/common/BaseTypography/BaseTypography';
 
-const SuaQuanLiDichVu = ({ path, id }: { path: string; id: number }) => {
+const SuaQuanLiDichVu = ({ path, id, existingOrders }: { path: string; id: number; existingOrders?: number[] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [form] = BaseForm.useForm();
@@ -110,7 +110,7 @@ const SuaQuanLiDichVu = ({ path, id }: { path: string; id: number }) => {
         ]}
       >
         <BaseForm id={`formSuaQuanLiDichVu-${id}`} form={form} layout='vertical' onFinish={onUpdate}>
-          <FormQuanLiDichVu disabled={false} />
+          <FormQuanLiDichVu disabled={false} existingOrders={existingOrders} />
         </BaseForm>
       </BaseModal>
     </>

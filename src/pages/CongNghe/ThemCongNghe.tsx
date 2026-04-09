@@ -9,6 +9,8 @@ import { useState } from 'react';
 import FormCongNghe from './FormCongNghe';
 import { useTranslation } from 'react-i18next';
 import { BaseTypography } from '@app/components/common/BaseTypography/BaseTypography';
+import { getListData } from '@app/api/getData.api';
+import { handleDuplicateOrder } from '@app/utils/utils';
 
 import { CongNgheFormValues } from './types';
 import { STATUS_ACTIVE, STATUS_INACTIVE } from './constants';
@@ -16,12 +18,25 @@ import { STATUS_ACTIVE, STATUS_INACTIVE } from './constants';
 const ThemCongNghe = ({ path }: { path: string }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [existingOrders, setExistingOrders] = useState<number[]>([]);
   const [form] = BaseForm.useForm();
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const title = `Thêm ${t('common.cong-nghe').toLowerCase()}`;
 
   const showModal = async () => {
+    try {
+      const res = await getListData(path, { limit: 1000 });
+      if (res?.data) {
+        const orders = res.data.map((item: any) => item.thu_tu);
+        setExistingOrders(orders);
+        // Suggest next order
+        const nextOrder = handleDuplicateOrder(0, orders);
+        form.setFieldsValue({ thu_tu: nextOrder });
+      }
+    } catch (error) {
+      console.error('Error fetching existing technology orders:', error);
+    }
     setIsModalOpen(true);
   };
 
@@ -73,7 +88,7 @@ const ThemCongNghe = ({ path }: { path: string }) => {
         ]}
       >
         <BaseForm id='formThemCongNghe' form={form} layout='vertical' onFinish={onCreate}>
-          <FormCongNghe />
+          <FormCongNghe existingOrders={existingOrders} />
         </BaseForm>
       </BaseModal>
     </>

@@ -6,6 +6,7 @@ import { CauHinhTrangData } from './types';
 import { HeaderTab } from './components/HeaderTab';
 import { FooterTab } from './components/FooterTab';
 import { ContactTab } from './components/ContactTab';
+import { HomeTab } from './components/HomeTab';
 
 const CauHinhTrang: React.FC = () => {
   const [configs, setConfigs] = useState<CauHinhTrangData[]>([]);
@@ -42,6 +43,11 @@ const CauHinhTrang: React.FC = () => {
       key: 'header',
       label: 'Header',
       children: <HeaderTab configs={configs} onUpdate={handleUpdate} loading={loading} />
+    },
+    {
+      key: 'home',
+      label: 'Trang chủ',
+      children: <HomeTab configs={configs} onUpdate={handleUpdate} loading={loading} />
     },
     {
       key: 'footer',

@@ -48,7 +48,8 @@ const DanhSachCongNghe = ({ path, permission }: { path: string; permission: Acti
     t,
     path,
     SuaCongNghe,
-    XemCongNghe
+    XemCongNghe,
+    danhSach?.data?.map((item: any) => item.thu_tu) || []
   ).map((item: any) => ({
     ...item,
     width: item.width || '210px'
