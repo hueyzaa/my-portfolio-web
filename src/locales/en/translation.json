@@ -213,7 +213,10 @@
     "zipcode": "Zipcode",
     "delete": "Delete",
     "quan-li-du-an": "Project Management",
-    "quan-ly-dich-vu": "Service Management"
+    "quan-ly-dich-vu": "Service Management",
+    "deleteSuccess": "Deleted successfully",
+    "deleteAll": "Delete all",
+    "seeMore": "See more"
   },
   "medical-dashboard": {
     "activity": {
@@ -465,10 +468,13 @@
       "h": "h"
     },
     "notifications": {
+      "title": "Notifications",
       "loginAttempt": "There was an attempt to log in to your account from another device",
       "mention": "mentioned you in <0>{{place}}</0>",
       "noNotifications": "No notifications yet",
-      "readAll": "Mark all as read",
+      "markReadAll": "Mark all as read",
+      "markReadAllSuccess": "All notifications marked as read",
+      "deleteAllSuccess": "All notifications deleted",
       "serverError": "The server is not responding, try again later",
       "successPayment": "Your payment was successfully made",
       "viewAll": "View all"

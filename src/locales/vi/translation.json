@@ -9,7 +9,9 @@
     "notifications": {
       "title": "Thông báo",
       "markReadAll": "Đánh dấu đã đọc",
-      "noNotifications": "Không có thông báo"
+      "noNotifications": "Không có thông báo",
+      "markReadAllSuccess": "Đã đánh dấu tất cả là đã đọc",
+      "deleteAllSuccess": "Đã xoá tất cả thông báo"
     }
   },
   "newPassword": {
@@ -67,7 +69,10 @@
     "view": "Xem",
     "cau-hinh-trang": "Cấu hình trang",
     "quan-ly-lien-he": "Quản lý Liên hệ",
-    "quan-li-dich-vu": "Quản lý dịch vụ"
+    "quan-li-dich-vu": "Quản lý dịch vụ",
+    "deleteSuccess": "Xoá thành công",
+    "deleteAll": "Xoá tất cả",
+    "seeMore": "Xem thêm"
   },
   "baocao": {},
   "login": {

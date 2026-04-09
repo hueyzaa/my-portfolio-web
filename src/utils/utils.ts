@@ -73,12 +73,36 @@ export const mapBadgeStatus = (status: BaseBadgeProps['status']): Severity => {
  * @param {string} operator Toán tử
  * @param {any} value Dữ liệu
  */
-export const createFilterQuery = (index: number, field: string, operator: string, value: string | number) => {
-  return {
+export const createFilterQuery = (
+  index: number,
+  field: string,
+  operator: string,
+  value: string | number,
+  limit: number = 10,
+  sortField: string = 'id',
+  sortOrder: string = 'desc',
+  extraFilters: any[] = []
+) => {
+  const query: any = {
     [`f[${index}][field]`]: `${field}`,
     [`f[${index}][operator]`]: `${operator}`,
-    [`f[${index}][value]`]: `${value}`
+    [`f[${index}][value]`]: `${value}`,
+    limit: limit,
+    page: index + 1, // Common pattern in this project
+    sortField: sortField,
+    sortOrder: sortOrder
   };
+
+  if (extraFilters && extraFilters.length > 0) {
+    extraFilters.forEach((filter, i) => {
+      const extraIndex = index + 1 + i;
+      query[`f[${extraIndex}][field]`] = filter.field;
+      query[`f[${extraIndex}][operator]`] = filter.operator;
+      query[`f[${extraIndex}][value]`] = filter.value;
+    });
+  }
+
+  return query;
 };
 
 export const createFilterQueryFormObject = (obj: any) => {

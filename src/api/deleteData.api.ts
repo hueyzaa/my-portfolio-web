@@ -54,3 +54,23 @@ export const bulkDeleteData = async (path: string, ids: number[], fieldName: str
     return false;
   }
 };
+
+export const patchData = async (path: string, payload: any) => {
+  try {
+    const resp: IApiSuccess = await apiInstance.patch(path, payload);
+    return resp;
+  } catch (error: any) {
+    notificationController.error({ message: error.message });
+    throw error;
+  }
+};
+
+export const postData = async (path: string, payload: any) => {
+  try {
+    const resp: IApiSuccess = await apiInstance.post(path, payload);
+    return resp;
+  } catch (error: any) {
+    notificationController.error({ message: error.message });
+    throw error;
+  }
+};

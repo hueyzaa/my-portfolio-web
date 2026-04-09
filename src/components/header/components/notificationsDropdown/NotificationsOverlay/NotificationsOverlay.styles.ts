@@ -12,6 +12,40 @@ export const NoticesOverlayMenu = styled.div`
   }
 `;
 
+export const UnreadDot = styled.div`
+  background: var(--primary-color);
+  width: 8px;
+  height: 8px;
+  borderRadius: 50%;
+  boxShadow: 0 0 8px var(--primary-color);
+  display: inline-block;
+`;
+
+export const NotificationItem = styled.div<{ $isUnread: boolean }>`
+  cursor: pointer;
+  padding: 12px 16px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+  background-color: ${(props) => (props.$isUnread ? 'rgba(var(--primary-rgb), 0.05)' : 'transparent')};
+  border: 1px solid transparent;
+
+  &:hover {
+    background-color: rgba(var(--primary-rgb), 0.08);
+    border-color: var(--primary-color);
+  }
+`;
+
+export const DateTimeText = styled.div`
+  font-size: 11px;
+  color: var(--disabled-color);
+`;
+
+export const SeeMoreBtn = styled(BaseButton)`
+  color: var(--primary-color);
+  font-weight: 500;
+`;
+
 export const SplitDivider = styled(BaseDivider)`
   margin: 0 0.5rem;
 `;
