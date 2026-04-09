@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import * as S from '../../LoginForm.styles';
 import { useAppSelector } from '@app/hooks/reduxHooks';
 import { useEffect, useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 interface CauHinhHeThong {
   logoUrl: string;
@@ -20,11 +21,15 @@ interface CauHinhHeThong {
 const LoginTypeOne = ({
   handleSubmit,
   initValues,
-  isLoading
+  isLoading,
+  captchaRef,
+  requireRecaptcha
 }: {
   handleSubmit: (values: any) => void;
   initValues?: any;
   isLoading: boolean;
+  captchaRef: any;
+  requireRecaptcha: boolean;
 }) => {
   const { t } = useTranslation();
   const [config, setConfig] = useState<CauHinhHeThong | null>(null);
@@ -83,6 +88,11 @@ const LoginTypeOne = ({
                 placeholder={t('common.password')}
               />
             </Auth.FormItem>
+            {requireRecaptcha && (
+              <Auth.FormItem>
+                <ReCAPTCHA sitekey={import.meta.env.VITE_REACT_APP_SITE_KEY || ''} ref={captchaRef} />
+              </Auth.FormItem>
+            )}
             <Auth.ActionsWrapper>
               <BaseForm.Item name='rememberMe' valuePropName='checked' initialValue={false}>
                 <Auth.FormCheckbox>
@@ -108,3 +118,4 @@ const LoginTypeOne = ({
 };
 
 export default LoginTypeOne;
+

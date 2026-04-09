@@ -18,7 +18,7 @@ import { LoginFormData } from './LoginForm.types';
  * Custom hook for handling login logic
  * Manages login flow, OTP, recaptcha, and navigation
  */
-export const useLogin = () => {
+export const useLogin = (setRequireRecaptcha?: (value: boolean) => void) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [isLoading, setLoading] = useState(false);
@@ -29,6 +29,7 @@ export const useLogin = () => {
       const resp: IUser = await Login(values, reCapchaValue);
 
       if (resp) {
+        console.log('useLogin: Received response', resp);
         // Handle OTP requirement
         if (resp.requireOtp) {
           persistRequireOtp(true);
@@ -37,7 +38,9 @@ export const useLogin = () => {
 
         // Handle recaptcha requirement from server
         if (resp.requireRecaptcha) {
-          // Server will handle recaptcha state via useRecaptcha hook
+          console.log('useLogin: Detected requireRecaptcha');
+          setRequireRecaptcha?.(true);
+          notificationController.warning({ message: 'Vui lòng xác thực reCAPTCHA để tiếp tục' });
           return;
         }
 

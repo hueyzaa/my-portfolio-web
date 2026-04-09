@@ -19,8 +19,8 @@ export const LoginForm: React.FC = () => {
   const initValues: LoginFormData = JSON.parse(readAccount() || '{}');
 
   // Custom hooks
-  const { handleSubmit, isLoading } = useLogin();
-  const { captchaRef, requireRecaptcha, resetCaptcha } = useRecaptcha();
+  const { captchaRef, requireRecaptcha, setRequireRecaptcha, resetCaptcha } = useRecaptcha();
+  const { handleSubmit, isLoading } = useLogin(setRequireRecaptcha);
   useSystemConfig();
 
   // Wrapper to handle recaptcha validation and submission
@@ -40,7 +40,15 @@ export const LoginForm: React.FC = () => {
 
   return (
     <>
-      {typeLogin === '1' && <LoginVariantOne handleSubmit={onSubmit} isLoading={isLoading} initValues={initValues} />}
+      {typeLogin === '1' && (
+        <LoginVariantOne
+          handleSubmit={onSubmit}
+          isLoading={isLoading}
+          initValues={initValues}
+          captchaRef={captchaRef}
+          requireRecaptcha={requireRecaptcha}
+        />
+      )}
       {typeLogin === '2' && <LoginVariantTwo handleSubmit={onSubmit} isLoading={isLoading} initValues={initValues} />}
       {typeLogin === '3' && (
         <LoginVariantThree
