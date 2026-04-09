@@ -89,8 +89,8 @@ export const createFilterQuery = (
     [`f[${index}][value]`]: `${value}`,
     limit: limit,
     page: index + 1, // Common pattern in this project
-    sortField: sortField,
-    sortOrder: sortOrder
+    sort_column: sortField,
+    sort_direction: sortOrder
   };
 
   if (extraFilters && extraFilters.length > 0) {
