@@ -30,6 +30,13 @@ const StyledDescriptions = styled(Descriptions)`
   }
 `;
 
+const getImageUrl = (baseAppUrl: string, path: string): string => {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
+  return `${baseAppUrl}/${cleanPath}`;
+};
+
 const XemChiTietQuanLiDuAn = () => {
   const { id } = useParams();
   const [data, setData] = useState<ProjectEntity | null>(null);
@@ -162,7 +169,7 @@ const XemChiTietQuanLiDuAn = () => {
               <Descriptions.Item label='Ảnh đại diện'>
                 {data.thumbnail ? (
                   <BaseImage
-                    src={data.thumbnail.startsWith('http') ? data.thumbnail : `${apiURL}/${data.thumbnail}`}
+                    src={getImageUrl(apiURL, data.thumbnail)}
                     style={{
                       maxHeight: '300px',
                       maxWidth: '100%',
@@ -181,7 +188,7 @@ const XemChiTietQuanLiDuAn = () => {
                     {data.gallery.map((img: string, index: number) => (
                       <BaseCol xs={24} sm={12} md={8} lg={6} key={index}>
                         <BaseImage
-                          src={img.startsWith('http') ? img : `${apiURL}/${img}`}
+                          src={getImageUrl(apiURL, img)}
                           style={{
                             width: '100%',
                             height: '160px',

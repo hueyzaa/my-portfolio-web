@@ -24,6 +24,9 @@ export interface ProjectFormValues {
   title: string;
   mo_ta_ngan?: string;
   mo_ta_chi_tiet?: string;
+  vai_tro?: string;
+  dich_vu?: string;
+  tieu_de_phu?: string;
   thumbnail?: any;
   gallery?: any;
   tools?: string[];

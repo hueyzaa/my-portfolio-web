@@ -9,8 +9,6 @@ import { useState } from 'react';
 import FormQuanLiDichVu from './FormQuanLiDichVu';
 import { useTranslation } from 'react-i18next';
 import { BaseTypography } from '@app/components/common/BaseTypography/BaseTypography';
-import { apiInstance } from '@app/api/core.api';
-import { apiURL } from '@app/configs/configs';
 import { getListData } from '@app/api/getData.api';
 import { handleDuplicateOrder } from '@app/utils/utils';
 
@@ -47,26 +45,35 @@ const ThemQuanLiDichVu = ({ path }: { path: string }) => {
   const onCreate = async (values: any) => {
     setIsLoading(true);
     try {
-      // Handle Image Upload
+      const formData = new FormData();
+
+      // Append basic fields
+      formData.append('ten', values.ten);
+      if (values.mo_ta) formData.append('mo_ta', values.mo_ta);
+      if (values.thu_tu !== undefined) formData.append('thu_tu', values.thu_tu.toString());
+      if (values.trang_thai !== undefined) formData.append('trang_thai', values.trang_thai ? '1' : '0');
+
+      // Append tags individually
+      if (Array.isArray(values.tags)) {
+        values.tags.forEach((tag: string) => formData.append('tags[]', tag));
+      }
+
+      // Handle File
       if (values.anh && values.anh.length > 0) {
-        const item = values.anh[0];
-        if (item.originFileObj) {
-          const formData = new FormData();
-          formData.append('file', item.originFileObj);
-          const res = await apiInstance.post('upload', formData);
-          values.anh = res?.data?.path;
+        const file = values.anh[0].originFileObj;
+        if (file) {
+          formData.append('file', file);
         } else {
-          values.anh = item.response?.path || item.url?.replace(`${apiURL}/`, '');
+          // If it happens to be an existing path (unlikely for Them)
+          formData.append('anh', values.anh[0].url || values.anh[0].response?.path || '');
         }
-      } else {
-        values.anh = null;
       }
 
       const closeModel = () => {
         handleCancel();
         dispatch(appActions.toggleReload('DANH_SACH'));
       };
-      await postData(path, values, closeModel);
+      await postData(path, formData, closeModel);
     } catch (error) {
       console.error('Error creating service:', error);
     } finally {

@@ -6,6 +6,7 @@ import type { RcFile } from 'antd/es/upload/interface';
 import { BaseUpload } from '@app/components/common/BaseUpload/BaseUpload';
 import { BaseButton } from '@app/components/common/BaseButton/BaseButton';
 import { apiURL } from '@app/configs/configs';
+import { getToken } from '@app/utils/redux.utils';
 import styled from 'styled-components';
 
 const IMAGE_TILE_SIZE = 180;
@@ -93,7 +94,8 @@ const deleteButtonStyle: React.CSSProperties = {
 const getImageUrl = (baseAppUrl: string, path: string): string => {
   if (!path) return '';
   if (path.startsWith('http')) return path;
-  return `${baseAppUrl}/${path.replace(/\\/g, '/')}`;
+  const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
+  return `${baseAppUrl}/${cleanPath}`;
 };
 
 export interface MainImageUploadProps {

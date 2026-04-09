@@ -8,7 +8,7 @@ import useColumnSearch from '@app/hooks/useColumnSearch';
 import { usePagination } from '@app/hooks/usePagination';
 import { appActions } from '@app/store/slices/appSlice';
 import { Actions } from '@app/interfaces/interfaces';
-import { createFilterQueryFromArray } from '@app/utils/utils';
+import { createFilterQueryFromArray, getImageUrl } from '@app/utils/utils';
 import { useEffect, useState } from 'react';
 import SuaQuanLiDichVu from './SuaQuanLiDichVu';
 import moment from 'moment';
@@ -16,6 +16,7 @@ import { BaseRow } from '@app/components/common/BaseRow/BaseRow';
 import { BaseCol } from '@app/components/common/BaseCol/BaseCol';
 import { useTranslation } from 'react-i18next';
 import XemChiTietQuanLiDichVu from './XemChiTietQuanLiDichVu';
+import { apiURL } from '@app/configs/configs';
 
 const DanhSachQuanLiDichVu = ({ path, permission }: { path: string; permission: Actions }) => {
   const { t } = useTranslation();
@@ -56,10 +57,10 @@ const DanhSachQuanLiDichVu = ({ path, permission }: { path: string; permission: 
           <BaseSpace size={0}>
             <XemChiTietQuanLiDichVu path={path} id={id} />
             {permission.edit && (
-              <SuaQuanLiDichVu 
-                path={path} 
-                id={id} 
-                existingOrders={danhSach?.data?.map((item: any) => item.thu_tu) || []} 
+              <SuaQuanLiDichVu
+                path={path}
+                id={id}
+                existingOrders={danhSach?.data?.map((item: any) => item.thu_tu) || []}
               />
             )}
             {permission.delete && (
@@ -82,7 +83,7 @@ const DanhSachQuanLiDichVu = ({ path, permission }: { path: string; permission: 
       width: '120px',
       render: (anh: string) => (
         <img
-          src={anh?.startsWith('http') ? anh : `${import.meta.env.VITE_API_URL || 'http://localhost:9999'}/${anh}`}
+          src={getImageUrl(apiURL, anh)}
           style={{ width: 80, height: 50, objectFit: 'cover', borderRadius: 4 }}
           alt='Dịch vụ'
         />

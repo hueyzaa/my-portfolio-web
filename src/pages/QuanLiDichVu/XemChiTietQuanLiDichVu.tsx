@@ -10,6 +10,7 @@ import { BaseCol } from '@app/components/common/BaseCol/BaseCol';
 import { Tag, Space, Divider } from 'antd';
 import { apiURL } from '@app/configs/configs';
 import { getListData } from '@app/api/getData.api';
+import { getImageUrl } from '@app/utils/utils';
 
 const XemChiTietQuanLiDichVu = ({ path, id }: { path: string; id: number }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -126,7 +127,7 @@ const XemChiTietQuanLiDichVu = ({ path, id }: { path: string; id: number }) => {
                     }}
                   >
                     <img
-                      src={data.anh.startsWith('http') ? data.anh : `${apiURL}/${data.anh}`}
+                      src={getImageUrl(apiURL, data.anh)}
                       alt={data.ten}
                       style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }}
                     />

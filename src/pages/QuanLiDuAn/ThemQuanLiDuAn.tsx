@@ -1,4 +1,3 @@
-import { apiInstance } from '@app/api/core.api';
 import { postData } from '@app/api/postData.api';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
 import { appActions } from '@app/store/slices/appSlice';
@@ -48,38 +47,40 @@ const ThemQuanLiDuAn = () => {
   const onCreate = async (values: ProjectFormValues) => {
     setIsLoading(true);
     try {
-      // 1. Upload Thumbnail
+      const formData = new FormData();
+
+      // Basic Fields
+      formData.append('title', values.title);
+      if (values.mo_ta_ngan) formData.append('mo_ta_ngan', values.mo_ta_ngan);
+      if (values.mo_ta_chi_tiet) formData.append('mo_ta_chi_tiet', values.mo_ta_chi_tiet);
+      if (values.vai_tro) formData.append('vai_tro', values.vai_tro);
+      if (values.dich_vu) formData.append('dich_vu', values.dich_vu);
+      if (values.tieu_de_phu) formData.append('tieu_de_phu', values.tieu_de_phu);
+      if (values.order !== undefined) formData.append('order', values.order.toString());
+      formData.append('status', values.status ? STATUS_PUBLISHED : STATUS_DRAFT);
+
+      // JSON strings for arrays/objects if backend expects them that way,
+      // but usually for Multipart we append individually or as JSON string.
+      // My backend DTO has tools as IsArray. I'll append individually as tools[].
+      if (Array.isArray(values.tools)) {
+        values.tools.forEach((tool: any) => formData.append('tools[]', tool));
+      }
+
+      // 1. Handle Thumbnail
       if (values.thumbnail && values.thumbnail.length > 0) {
         const file = values.thumbnail[0].originFileObj;
         if (file) {
-          const formData = new FormData();
-          formData.append('file', file);
-          const res = await apiInstance.post('upload', formData);
-          values.thumbnail = res?.data?.path;
-        } else {
-          values.thumbnail = values.thumbnail[0].response?.path || values.thumbnail[0].url;
+          formData.append('thumbnail', file);
         }
-      } else {
-        values.thumbnail = null;
       }
 
-      // 2. Upload Gallery
+      // 2. Handle Gallery
       if (values.gallery && values.gallery.length > 0) {
-        const galleryPaths = [];
-        for (const fileItem of values.gallery) {
-          const file = fileItem.originFileObj;
-          if (file) {
-            const formData = new FormData();
-            formData.append('file', file);
-            const res = await apiInstance.post('upload', formData);
-            galleryPaths.push(res?.data?.path);
-          } else {
-            galleryPaths.push(fileItem.response?.path || fileItem.url);
+        values.gallery.forEach((item: any) => {
+          if (item.originFileObj) {
+            formData.append('gallery', item.originFileObj);
           }
-        }
-        values.gallery = galleryPaths;
-      } else {
-        values.gallery = [];
+        });
       }
 
       const onSuccess = () => {
@@ -87,12 +88,7 @@ const ThemQuanLiDuAn = () => {
         goBack();
       };
 
-      const payload = {
-        ...values,
-        status: values.status ? STATUS_PUBLISHED : STATUS_DRAFT
-      };
-
-      await postData(path, payload, onSuccess);
+      await postData(path, formData, onSuccess);
     } catch (error) {
       console.error('Error creating project:', error);
     } finally {

@@ -274,6 +274,13 @@ export const normalizeText = (text: string): string => {
     .replace(/\s+/g, '-'); // thay khoảng trắng bằng "-"
 };
 
+export const getImageUrl = (baseAppUrl: string, path: string | undefined): string => {
+  if (!path) return '';
+  if (path.startsWith('http')) return path;
+  const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
+  return `${baseAppUrl}/${cleanPath}`;
+};
+
 export const setValueFileAnt = (apiURL: string, filePath: string, fileName?: string) => {
   if (!filePath) return undefined;
 
@@ -281,14 +288,15 @@ export const setValueFileAnt = (apiURL: string, filePath: string, fileName?: str
   const displayName = fileName || filePath.split(/[/\\]/).pop() || 'file';
 
   // Build full URL
-  const fullUrl = filePath.includes('http') ? filePath : `${apiURL}/${filePath.replace(/\\/g, '/')}`;
+  const fullUrl = getImageUrl(apiURL, filePath);
 
   return [
     {
       uid: Date.now().toString(),
       name: displayName,
       url: fullUrl,
-      status: 'done' as const
+      status: 'done' as const,
+      response: { path: filePath } // Keep the original path for the form
     }
   ];
 };

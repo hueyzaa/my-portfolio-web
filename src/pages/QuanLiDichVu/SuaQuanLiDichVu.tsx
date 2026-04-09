@@ -1,5 +1,4 @@
 import { EditOutlined } from '@ant-design/icons';
-import { apiInstance } from '@app/api/core.api';
 import { getDataById } from '@app/api/getData.api';
 import { patchData } from '@app/api/updateData';
 import { BaseButton } from '@app/components/common/BaseButton/BaseButton';
@@ -12,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import FormQuanLiDichVu from './FormQuanLiDichVu';
 import { apiURL } from '@app/configs/configs';
 import { BaseTypography } from '@app/components/common/BaseTypography/BaseTypography';
+import { getImageUrl } from '@app/utils/utils';
 
 const SuaQuanLiDichVu = ({ path, id, existingOrders }: { path: string; id: number; existingOrders?: number[] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,8 +28,8 @@ const SuaQuanLiDichVu = ({ path, id, existingOrders }: { path: string; id: numbe
         uid: '-1',
         name: filePath.split('/').pop() || 'image.png',
         status: 'done',
-        url: filePath.startsWith('http') ? filePath : `${apiURL}/${filePath}`,
-        thumbUrl: filePath.startsWith('http') ? filePath : `${apiURL}/${filePath}`,
+        url: getImageUrl(apiURL, filePath),
+        thumbUrl: getImageUrl(apiURL, filePath),
         response: { path: filePath }
       }
     ];
@@ -55,19 +55,31 @@ const SuaQuanLiDichVu = ({ path, id, existingOrders }: { path: string; id: numbe
   const onUpdate = async (values: any) => {
     setIsLoading(true);
     try {
-      // Handle Image Upload
+      const formData = new FormData();
+
+      // Append basic fields
+      formData.append('ten', values.ten);
+      if (values.mo_ta) formData.append('mo_ta', values.mo_ta);
+      if (values.thu_tu !== undefined) formData.append('thu_tu', values.thu_tu.toString());
+      if (values.trang_thai !== undefined) formData.append('trang_thai', values.trang_thai ? '1' : '0');
+
+      // Append tags individually
+      if (Array.isArray(values.tags)) {
+        values.tags.forEach((tag: string) => formData.append('tags[]', tag));
+      }
+
+      // Handle File
       if (values.anh && values.anh.length > 0) {
         const item = values.anh[0];
         if (item.originFileObj) {
-          const formData = new FormData();
           formData.append('file', item.originFileObj);
-          const res = await apiInstance.post('upload', formData);
-          values.anh = res?.data?.path;
         } else {
-          values.anh = item.response?.path || item.url?.replace(`${apiURL}/`, '');
+          // Preserve existing path
+          const existingPath = item.response?.path || item.url?.replace(`${apiURL}/`, '') || '';
+          formData.append('anh', existingPath);
         }
       } else {
-        values.anh = null;
+        formData.append('anh', '');
       }
 
       const closeModel = () => {
@@ -75,7 +87,7 @@ const SuaQuanLiDichVu = ({ path, id, existingOrders }: { path: string; id: numbe
         dispatch(appActions.toggleReload('DANH_SACH'));
       };
 
-      await patchData(path, id, values, closeModel);
+      await patchData(path, id, formData, closeModel);
     } catch (error) {
       console.error('Error updating service:', error);
     } finally {

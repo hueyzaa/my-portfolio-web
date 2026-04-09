@@ -122,7 +122,8 @@ const orderLabelStyle: React.CSSProperties = {
 const normalizeImageUrl = (baseAppUrl: string, url: string | undefined): string | undefined => {
   if (!url) return undefined;
   if (url.includes('http')) return url;
-  return `${baseAppUrl}/${url.replace(/\\/g, '/')}`;
+  const cleanPath = url.replace(/\\/g, '/').replace(/^\//, '');
+  return `${baseAppUrl}/${cleanPath}`;
 };
 
 const isBlobLike = (file: unknown): file is Blob => {

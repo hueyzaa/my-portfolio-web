@@ -1,4 +1,3 @@
-import { apiInstance } from '@app/api/core.api';
 import { getDataById } from '@app/api/getData.api';
 import { patchData } from '@app/api/updateData';
 import { BaseForm } from '@app/components/common/forms/BaseForm/BaseForm';
@@ -43,10 +42,7 @@ const SuaQuanLiDuAn = () => {
     const fetchData = async () => {
       if (!id) return;
       try {
-        const [data, listRes] = await Promise.all([
-          getDataById(Number(id), path),
-          getListData(path, { limit: 1000 })
-        ]);
+        const [data, listRes] = await Promise.all([getDataById(Number(id), path), getListData(path, { limit: 1000 })]);
 
         if (data) {
           const formData = {
@@ -77,37 +73,44 @@ const SuaQuanLiDuAn = () => {
   const onUpdate = async (values: ProjectFormValues) => {
     setIsLoading(true);
     try {
-      // 1. Process Thumbnail
+      const formData = new FormData();
+
+      // Basic Fields
+      formData.append('title', values.title);
+      if (values.mo_ta_ngan) formData.append('mo_ta_ngan', values.mo_ta_ngan);
+      if (values.mo_ta_chi_tiet) formData.append('mo_ta_chi_tiet', values.mo_ta_chi_tiet);
+      if (values.vai_tro) formData.append('vai_tro', values.vai_tro);
+      if (values.dich_vu) formData.append('dich_vu', values.dich_vu);
+      if (values.tieu_de_phu) formData.append('tieu_de_phu', values.tieu_de_phu);
+      if (values.order !== undefined) formData.append('order', values.order.toString());
+      formData.append('status', values.status ? STATUS_PUBLISHED : STATUS_DRAFT);
+
+      // Resolve Tools
+      if (Array.isArray(values.tools)) {
+        values.tools.forEach((tool: any) => formData.append('tools[]', tool));
+      }
+
+      // 1. Handle Thumbnail
       if (values.thumbnail && values.thumbnail.length > 0) {
         const item = values.thumbnail[0];
         if (item.originFileObj) {
-          const formData = new FormData();
-          formData.append('file', item.originFileObj);
-          const res = await apiInstance.post('upload', formData);
-          values.thumbnail = res?.data?.path;
+          formData.append('thumbnail', item.originFileObj);
         } else {
-          values.thumbnail = item.response?.path || item.url?.replace(`${apiURL}/`, '');
+          const path = item.response?.path || item.url?.replace(`${apiURL}/`, '') || '';
+          formData.append('thumbnail', path);
         }
-      } else {
-        values.thumbnail = null;
       }
 
-      // 2. Process Gallery
+      // 2. Handle Gallery
       if (values.gallery && values.gallery.length > 0) {
-        const galleryPaths = [];
-        for (const item of values.gallery) {
+        values.gallery.forEach((item: any) => {
           if (item.originFileObj) {
-            const formData = new FormData();
-            formData.append('file', item.originFileObj);
-            const res = await apiInstance.post('upload', formData);
-            galleryPaths.push(res?.data?.path);
+            formData.append('gallery', item.originFileObj);
           } else {
-            galleryPaths.push(item.response?.path || item.url?.replace(`${apiURL}/`, ''));
+            const path = item.response?.path || item.url?.replace(`${apiURL}/`, '') || '';
+            formData.append('gallery_existing[]', path);
           }
-        }
-        values.gallery = galleryPaths;
-      } else {
-        values.gallery = [];
+        });
       }
 
       const onSuccess = () => {
@@ -115,12 +118,7 @@ const SuaQuanLiDuAn = () => {
         goBack();
       };
 
-      const payload = {
-        ...values,
-        status: values.status ? STATUS_PUBLISHED : STATUS_DRAFT
-      };
-
-      await patchData(path, Number(id), payload, onSuccess);
+      await patchData(path, Number(id), formData, onSuccess);
     } catch (error) {
       console.error('Error updating project:', error);
     } finally {
