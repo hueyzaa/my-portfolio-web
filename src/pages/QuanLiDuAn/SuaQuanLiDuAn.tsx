@@ -12,6 +12,7 @@ import ProjectFormPage from './components/ProjectFormPage';
 import { ProjectEntity, ProjectFormValues } from './types';
 import { PROJECT_PATH, STATUS_DRAFT, STATUS_PUBLISHED } from './constants';
 import { getListData } from '@app/api/getData.api';
+import { getImageUrl } from '@app/utils/utils';
 
 const SuaQuanLiDuAn = () => {
   const { id } = useParams();
@@ -30,10 +31,10 @@ const SuaQuanLiDuAn = () => {
     const paths = Array.isArray(filePath) ? filePath : [filePath];
     return paths.map((p, index) => ({
       uid: `-${index}`,
-      name: p.split('/').pop() || 'image.png',
+      name: p.split(/[/\\]/).pop() || 'image.png',
       status: 'done',
-      url: p.startsWith('http') ? p : `${apiURL}/${p}`,
-      thumbUrl: p.startsWith('http') ? p : `${apiURL}/${p}`,
+      url: getImageUrl(apiURL, p),
+      thumbUrl: getImageUrl(apiURL, p),
       response: { path: p }
     }));
   };
@@ -50,7 +51,7 @@ const SuaQuanLiDuAn = () => {
             status: data.status === STATUS_PUBLISHED,
             thumbnail: transformToFileList(data.thumbnail || ''),
             gallery: transformToFileList(data.gallery || []),
-            tools: data.tools || data.tool_details?.map((t: any) => t.id) || []
+            tools: (data.tools || data.tool_details?.map((t: any) => t.id) || []).map(Number)
           };
           setInitialData(formData as any);
           form.setFieldsValue(formData);

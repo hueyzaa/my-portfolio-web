@@ -277,8 +277,9 @@ export const normalizeText = (text: string): string => {
 export const getImageUrl = (baseAppUrl: string, path: string | undefined): string => {
   if (!path) return '';
   if (path.startsWith('http')) return path;
+  const baseUrl = baseAppUrl?.endsWith('/') ? baseAppUrl.slice(0, -1) : baseAppUrl;
   const cleanPath = path.replace(/\\/g, '/').replace(/^\//, '');
-  return `${baseAppUrl}/${cleanPath}`;
+  return `${baseUrl}/${cleanPath}`;
 };
 
 export const setValueFileAnt = (apiURL: string, filePath: string, fileName?: string) => {

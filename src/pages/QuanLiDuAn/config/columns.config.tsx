@@ -7,6 +7,8 @@ import { BaseButton } from '@app/components/common/BaseButton/BaseButton';
 import Delete from '@app/components/customs/Delete/Delete';
 import { ProjectEntity } from '../types';
 import { COLUMN_WIDTHS, STATUS_PUBLISHED } from '../constants';
+import { getImageUrl } from '@app/utils/utils';
+import { apiURL } from '@app/configs/configs';
 
 /**
  * Generate table columns configuration for project list
@@ -74,7 +76,7 @@ export const getProjectColumns = (
       render: (thumbnail: string) =>
         thumbnail ? (
           <img
-            src={thumbnail.startsWith('http') ? thumbnail : `${import.meta.env.VITE_API_URL || ''}/${thumbnail}`}
+            src={getImageUrl(apiURL, thumbnail)}
             alt='thumbnail'
             style={{ width: '50px', height: '50px', objectFit: 'cover' }}
           />
