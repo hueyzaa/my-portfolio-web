@@ -29,7 +29,6 @@ export const useLogin = (setRequireRecaptcha?: (value: boolean) => void) => {
       const resp: IUser = await Login(values, reCapchaValue);
 
       if (resp) {
-        console.log('useLogin: Received response', resp);
         // Handle OTP requirement
         if (resp.requireOtp) {
           persistRequireOtp(true);
@@ -38,7 +37,6 @@ export const useLogin = (setRequireRecaptcha?: (value: boolean) => void) => {
 
         // Handle recaptcha requirement from server
         if (resp.requireRecaptcha) {
-          console.log('useLogin: Detected requireRecaptcha');
           setRequireRecaptcha?.(true);
           notificationController.warning({ message: 'Vui lòng xác thực reCAPTCHA để tiếp tục' });
           return;

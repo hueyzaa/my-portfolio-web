@@ -21,7 +21,7 @@ export const Login = async (values: LoginFormData, reCapchaValue?: string) => {
       return resp.data;
     } else {
       // Kiểm tra nếu server yêu cầu reCAPTCHA
-      console.log('Login Response:', resp);
+
       if (resp.message && (resp.message.includes('reCAPTCHA') || resp.message.toLowerCase().includes('capcha'))) {
         return { requireRecaptcha: true };
       }
